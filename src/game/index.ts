@@ -5,6 +5,7 @@ import RenderEngine from "./engines/RenderEngine";
 import GameEngine from "./engines/GameEngine";
 import PhysicsEngine from "./engines/PhysicsEngine";
 import GameEntity from "./entities/GameEntity";
+import type Hero from "./entities/Hero";
 
 
 const MOUSE_CURSOR_SIZE = 10;
@@ -43,19 +44,24 @@ class Game {
         this.state.mousePosition = position;
         const bySelection = PhysicsEngine.heroesesUnderCursor(this.state, position, MOUSE_CURSOR_SIZE);
     
-        for (const hero of bySelection['inside']) {
+        const selected: Hero[] = [];
+        for (const hero of (bySelection['inside'] ?? [])) {
             hero.updateMeta({
                 selected: !hero.meta.selected
             });
+
+            if (hero.meta.selected) {
+                selected.push(hero);
+            }
         }
 
-        for (const hero of bySelection['outside']) {
+        for (const hero of (bySelection['outside'] ?? [])) {
             hero.updateMeta({
                 selected: false,
             });
         }
 
-        return bySelection['inside'];
+        return selected;
     }
 
     registerMousePosition(position: Position) {

@@ -6,7 +6,7 @@ const DEFAULTS = {
 
     PROJECTILE: {
         SIZE: 1,
-        MOVING_SPEED: 2,
+        MOVING_SPEED: 2200,
     },
 
     HERO: {
@@ -14,11 +14,11 @@ const DEFAULTS = {
         COLOR: 'black',
         SIZE: 10,
         MOVING_SPEED: 1,
-        ATTACK_SPEED: 0.5,
+        ATTACK_SPEED: 2200,
     },
 
     ABILITY: {
-        COOLDOWN: 10,
+        COOLDOWN: 3.3,
     }
 };
 

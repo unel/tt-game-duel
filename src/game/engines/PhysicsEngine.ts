@@ -43,6 +43,10 @@ class PhysicsEngine implements IEngine{
             }
 
             if (entity instanceof Hero) {
+                if (isCirclesOverlaps(entity.position, gameState.mousePosition, entity.size, this.#mouseCursorSize)) {
+                    entity.direction.y *= -1;
+                }
+
                 heroes.push([idx, entity]);
             }
         }
@@ -73,12 +77,14 @@ class PhysicsEngine implements IEngine{
         }
 
         for (const [,hero] of heroes) {
-            if (
-                hero.position.y - hero.size <= 0
-                || hero.position.y + hero.size >= gameState.worldSize.height
+            if (hero.position.y - hero.size <= 0) {
+                hero.direction.y *= -1
+                hero.position.y = 0 + hero.size + 10;
+            }
 
-            ) {
+            if (hero.position.y + hero.size >= gameState.worldSize.height) {
                 hero.direction.y *= -1;
+                hero.position.y = gameState.worldSize.height - hero.size - 10;
             }
 
         }

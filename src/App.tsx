@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 
 import type Hero from './game/entities/Hero';
 import { createNewGame } from './game/createGame';
-import Game from './game';
+
 import './App.css'
+import HeroForm from './components/HeroForm';
 
 let game = createNewGame();
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const selectedHero = useState<Hero | null>(null);
+  const [selectedHero, setSelectedHero] = useState<Hero | null>(null);
 
   const startGame = () => {
     game.start();
@@ -38,7 +39,7 @@ function App() {
 
     const heroes = game.registerMouseClick({x: e.clientX - rect.left, y: e.clientY - rect.top});
 
-    console.log('he', heroes);
+    setSelectedHero(heroes?.length ? heroes[0] : null);
   }
 
   const registerMouseEnter = () => {
@@ -82,6 +83,12 @@ function App() {
 
         <button onClick={newGame}>new</button>
       </section>
+
+      {selectedHero && (
+      <section>
+        <HeroForm hero={selectedHero} />
+      </section>
+      )}
     </main>
   )
 }

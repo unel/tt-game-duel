@@ -4,7 +4,7 @@ import Hero from "./entities/Hero";
 import Ability from "./Ability";
 import Projectile from "./entities/Projectile";
 
-export function createNewGame() {
+export function createNewGame({movingSpeed = 1010, cooldown = 3.3, projectileSpeed = 2200} = {}) {
     const worldSize = {
         width: 600,
         height: 600,
@@ -19,12 +19,15 @@ export function createNewGame() {
         position: {x: heroSize, y: worldSize.height / 2},
         color: 'blue',
         size: heroSize,
-        direction: {x: 0, y: -20},
+        direction: {x: 0, y: -movingSpeed},
     });
 
-    hero1.addAbility(new Ability({
-        cooldown: 5,
+    const ability1 = new Ability({
+        cooldown,
         name: 'fire/1',
+        meta: {
+            speed: projectileSpeed,
+        },
         activator: () => {
             game.addEntity(new Projectile({
                 position: {
@@ -32,22 +35,27 @@ export function createNewGame() {
                     x: hero1.position.x + hero1.size + projectileSize + 2,
                 },
                 size: projectileSize,
-                direction: {x: 10, y: 0},
+                direction: {x: ability1.meta.speed as number, y: 0},
             }))
         }
-    }));
+    });
+
+    hero1.addAbility(ability1);
     game.addEntity(hero1);
 
     const hero2 = new Hero({
         position: {x: worldSize.width - heroSize, y: worldSize.height / 2},
-        direction: {x: 0, y: 20},
+        direction: {x: 0, y: movingSpeed},
         size: heroSize,
         color: 'red',
     });
 
-    hero2.addAbility(new Ability({
-        cooldown: 5,
+    const ability2 = new Ability({
+        cooldown,
         name: 'fire/2',
+        meta: {
+            speed: projectileSpeed,
+        },
         activator: () => {
             game.addEntity(new Projectile({
                 position: {
@@ -55,10 +63,12 @@ export function createNewGame() {
                     x: hero2.position.x - hero2.size - projectileSize - 2,
                 },
                 size: projectileSize,
-                direction: {x: -10, y: 0},
+                direction: {x: -(ability2.meta.speed as number), y: 0},
             }))
         }
-    }))
+    });
+
+    hero2.addAbility(ability2);
     game.addEntity(hero2);
 
     return game;

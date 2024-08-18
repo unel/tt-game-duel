@@ -6,14 +6,16 @@ class Ability {
     timer: number;
     name: string;
     description: string;
+    meta: Record<string, unknown>;
     activator: () => void;
 
-    constructor({cooldown = DEFAULTS.ABILITY.COOLDOWN, name = '', description = '', activator = noop}) {
+    constructor({cooldown = DEFAULTS.ABILITY.COOLDOWN, name = '', description = '', meta = {}, activator = noop}) {
         this.cooldown = cooldown;
         this.timer = cooldown;
         this.name = name;
         this.description = description;
         this.activator = activator;
+        this.meta = meta;
     }
 
     canUse() {
