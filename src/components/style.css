@@ -1,0 +1,6 @@
+.canvas {
+    display: block;
+    box-sizing: border-box;
+
+    background-color: white;
+}
