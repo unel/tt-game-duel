@@ -28,6 +28,7 @@ class PhysicsEngine implements IEngine{
 
         const projectiles: [number, Projectile][] = [];
         const heroes: [number, Hero][] = [];
+        const heroesById: Record<string, Hero> = {};
 
         // moving
         for (const [key, entity] of Object.entries(gameState.entities)) {
@@ -48,6 +49,7 @@ class PhysicsEngine implements IEngine{
                 }
 
                 heroes.push([idx, entity]);
+                heroesById[entity.id] = entity;
             }
         }
 
@@ -58,7 +60,13 @@ class PhysicsEngine implements IEngine{
             for (const [, hero] of heroes) {
                 if (isCirclesOverlaps(hero.position, projectile.position, hero.size, projectile.size)) {
                     entitiesIndexesForRemove.push(pIdx);
-                    hero.takeDamage();
+                    hero.updateMeta({damage: (hero.meta.damage || 0) as number + 1});
+                    const attacker = heroesById[projectile.meta.sourceHeroId as string];
+                    if (attacker) {
+                        attacker.updateMeta({
+                            scores: (attacker.meta.scores || 0) as number + 1,
+                        });
+                    } 
                     continue;
                 }
 

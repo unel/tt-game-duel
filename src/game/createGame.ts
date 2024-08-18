@@ -4,7 +4,7 @@ import Hero from "./entities/Hero";
 import Ability from "./Ability";
 import Projectile from "./entities/Projectile";
 
-export function createNewGame({movingSpeed = 1010, cooldown = 3.3, projectileSpeed = 2200} = {}) {
+export function createNewGame({movingSpeed = 744, cooldown = 1.4, projectileSpeed = 2200} = {}) {
     const worldSize = {
         width: 600,
         height: 600,
@@ -27,12 +27,16 @@ export function createNewGame({movingSpeed = 1010, cooldown = 3.3, projectileSpe
         name: 'fire/1',
         meta: {
             speed: projectileSpeed,
+            sourceHeroId: hero1.id,
         },
         activator: () => {
             game.addEntity(new Projectile({
                 position: {
                     y: hero1.position.y,
                     x: hero1.position.x + hero1.size + projectileSize + 2,
+                },
+                meta: {
+                    sourceHeroId: ability1.meta.sourceHeroId,
                 },
                 size: projectileSize,
                 direction: {x: ability1.meta.speed as number, y: 0},
@@ -55,12 +59,16 @@ export function createNewGame({movingSpeed = 1010, cooldown = 3.3, projectileSpe
         name: 'fire/2',
         meta: {
             speed: projectileSpeed,
+            sourceHeroId: hero2.id,
         },
         activator: () => {
             game.addEntity(new Projectile({
                 position: {
                     y: hero2.position.y,
                     x: hero2.position.x - hero2.size - projectileSize - 2,
+                },
+                meta: {
+                    sourceHeroId: ability2.meta.sourceHeroId,
                 },
                 size: projectileSize,
                 direction: {x: -(ability2.meta.speed as number), y: 0},

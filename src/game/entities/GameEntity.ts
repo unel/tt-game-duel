@@ -7,9 +7,9 @@ class GameEntity {
     meta: Record<string, unknown>;
     id: string;
 
-    constructor({position = DEFAULTS.ENTITY.POSITION}) {
+    constructor({position = DEFAULTS.ENTITY.POSITION, meta = {}}) {
         this.position = position;
-        this.meta = {};
+        this.meta = meta;
         this.id = genRandomId(`${this.type()}-`);
     }
 

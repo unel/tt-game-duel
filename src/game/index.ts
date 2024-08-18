@@ -5,7 +5,7 @@ import RenderEngine from "./engines/RenderEngine";
 import GameEngine from "./engines/GameEngine";
 import PhysicsEngine from "./engines/PhysicsEngine";
 import GameEntity from "./entities/GameEntity";
-import type Hero from "./entities/Hero";
+import Hero from "./entities/Hero";
 
 
 const MOUSE_CURSOR_SIZE = 10;
@@ -127,6 +127,8 @@ class Game {
     }
 
     dumpState() {
+        if (this.state.status === 'destroyed') return;
+    
         console.log('game state', this.state);
     }
 

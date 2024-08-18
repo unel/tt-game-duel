@@ -5,8 +5,8 @@ import GameEntity from "./GameEntity";
 class MovableEntity extends GameEntity {
     direction: Direction;
 
-    constructor({position = DEFAULTS.ENTITY.POSITION, direction = DEFAULTS.ENTITY.DIRECTION}) {
-        super({position});
+    constructor({position = DEFAULTS.ENTITY.POSITION, direction = DEFAULTS.ENTITY.DIRECTION, meta = {}}) {
+        super({position, meta});
 
         this.direction = direction;
     }

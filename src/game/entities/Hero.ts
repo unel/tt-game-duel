@@ -7,7 +7,6 @@ class Hero extends MovableEntity {
     size: number;
     attackSpeed: number;
     abilities: Ability[];
-    damage: number;
 
     constructor({
         position = DEFAULTS.HERO.POSITION, 
@@ -16,15 +15,15 @@ class Hero extends MovableEntity {
         attackSpeed = DEFAULTS.HERO.ATTACK_SPEED, 
         direction = DEFAULTS.ENTITY.DIRECTION,
         abilities = [],
+        meta = {},
     } = {}) {
-        super({position});
+        super({position, meta});
 
         this.direction = direction;
         this.color = color;
         this.size = size;
         this.attackSpeed = attackSpeed;
         this.abilities = abilities;
-        this.damage = 0;
     }
 
     static createDefaultHero() {
@@ -37,10 +36,6 @@ class Hero extends MovableEntity {
 
     addAbility(ability: Ability) {
         this.abilities.push(ability);
-    }
-
-    takeDamage(n = 1) {
-        this.damage += n;
     }
 }
 

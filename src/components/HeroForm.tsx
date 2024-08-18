@@ -40,7 +40,7 @@ function HeroForm({hero}: Props) {
 
     return (
         <form>
-            <h3>Hero {hero.id}</h3>
+            <h3>Hero {hero.id} / {hero.meta.scores || 0}</h3>
 
             <div>
                 <label htmlFor="speed">Moving speed:</label>
@@ -50,7 +50,7 @@ function HeroForm({hero}: Props) {
 
             <div>
                 <label htmlFor="atk-speed">Cooldown:</label>
-                <input id="atk-speed" type="range" step="0.1" min="0.1" max="15" name="atk-speed" value={cooldown} onChange={updateCooldown} />
+                <input id="atk-speed" type="range" step="0.01" min="0" max="15" name="atk-speed" value={cooldown} onChange={updateCooldown} />
                 {cooldown}
             </div>
 
