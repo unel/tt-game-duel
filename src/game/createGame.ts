@@ -17,9 +17,15 @@ export function createNewGame({movingSpeed = 744, cooldown = 1.4, projectileSpee
 
     const hero1 = new Hero({
         position: {x: heroSize, y: worldSize.height / 2},
+        name: 'Player 1 (blue)',
         color: 'blue',
         size: heroSize,
         direction: {x: 0, y: -movingSpeed},
+    });
+
+    
+    hero1.subscribe('scores', (oldValue, value) => {
+        game.updateState({'scores1': value});
     });
 
     const ability1 = new Ability({
@@ -49,6 +55,7 @@ export function createNewGame({movingSpeed = 744, cooldown = 1.4, projectileSpee
 
     const hero2 = new Hero({
         position: {x: worldSize.width - heroSize, y: worldSize.height / 2},
+        name: 'Player 2 (red)',
         direction: {x: 0, y: movingSpeed},
         size: heroSize,
         color: 'red',
@@ -77,7 +84,22 @@ export function createNewGame({movingSpeed = 744, cooldown = 1.4, projectileSpee
     });
 
     hero2.addAbility(ability2);
+
+ 
+    hero2.subscribe('scores', (oldValue, value) => {
+        game.updateState({'scores2': value});
+    });
     game.addEntity(hero2);
+
+
+    game.subscribe('scores1', (o, n) => {
+        console.log(`scores1: ${o} -> ${n}`);
+    });
+
+    
+    game.subscribe('scores2', (o, n) => {
+        console.log(`scores2: ${o} -> ${n}`);
+    });
 
     return game;
 }

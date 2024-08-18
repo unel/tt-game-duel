@@ -1,0 +1,17 @@
+.score-board {
+    display: flex;
+    flex-direction: row;
+
+    column-gap: 16px;
+}
+
+.score-pane {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 4px;
+}
+
+.score-label {
+    font-weight: bold;
+}

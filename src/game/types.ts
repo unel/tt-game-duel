@@ -16,7 +16,7 @@ export type Size = {
 };
 
 
-export type NormalGameState = {
+export type NormalGameState = Record<string, unknown> & {
     status: 'created' | 'working' | 'stopped';
     worldSize: Size;
     mousePosition: Position;

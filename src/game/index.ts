@@ -9,6 +9,9 @@ import Hero from "./entities/Hero";
 
 
 const MOUSE_CURSOR_SIZE = 10;
+type StateListener = (oldValue: unknown, newValue: unknown) => void;
+type Destroyer = () => void;
+
 
 class Game {
     public state: GameState;
@@ -17,6 +20,10 @@ class Game {
     #physicsEngine: PhysicsEngine;
     #lastTickTime?: number;
     #rafId?: number;
+
+    #subscribers: Record<string, Array<undefined | StateListener>>;
+    #destroyers: Array<Destroyer | undefined>;
+
 
     constructor({ worldSize }: { worldSize: Size }) {
         this.state = {
@@ -36,6 +43,9 @@ class Game {
             this.#physicsEngine,
             this.#renderEngine,
         ];
+
+        this.#subscribers = {};
+        this.#destroyers = [];
     }
 
     registerMouseClick(position: Position) {
@@ -132,6 +142,47 @@ class Game {
         console.log('game state', this.state);
     }
 
+    updateState(updates: Record<string, unknown>) {
+        for (const [key, value] of Object.entries(updates)) {
+            const currentValue = this.state[key] as unknown;
+
+            if (currentValue !== value) {
+                this.state[key] = value;
+
+                this.notify(key, currentValue, value);
+            }
+        }
+    }
+
+    subscribe(stateKey: string, listener: StateListener) {
+        this.#subscribers[stateKey] ||= [];
+
+        this.#subscribers[stateKey].push(listener);
+        const subIdx = this.#subscribers[stateKey].length - 1;
+        const desIdx = this.#destroyers.length;
+
+        const destroyer = () => {
+            try {
+                this.#subscribers[stateKey][subIdx] = undefined;
+                this.#destroyers[desIdx] = undefined;
+            } catch (e) {
+                // pass
+            }
+        };
+
+        return destroyer;
+    }
+
+    notify(key: string, oldValue: unknown, newValue: unknown) {
+        for (const listener of this.#subscribers[key] || []) {
+            try {
+                listener?.(oldValue, newValue);
+            } catch (e) {
+                // pass
+            }
+        }
+    }
+
     stop() {
         if (['stopped', 'destroyed'].includes(this.state.status)) {
             return;
@@ -155,6 +206,15 @@ class Game {
         for (const engine of this.#engines) {
             engine.destroy();
         }
+
+        for (const destroyer of this.#destroyers) {
+            if (destroyer) {
+                destroyer();
+            }
+        }
+
+        this.#destroyers = [];
+        this.#subscribers = {};
     }
 }
 

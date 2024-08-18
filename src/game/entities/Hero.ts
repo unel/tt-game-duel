@@ -16,8 +16,9 @@ class Hero extends MovableEntity {
         direction = DEFAULTS.ENTITY.DIRECTION,
         abilities = [],
         meta = {},
+        name = '',
     } = {}) {
-        super({position, meta});
+        super({position, meta, name});
 
         this.direction = direction;
         this.color = color;
@@ -36,6 +37,11 @@ class Hero extends MovableEntity {
 
     addAbility(ability: Ability) {
         this.abilities.push(ability);
+    }
+
+    destroy() {
+        super.destroy();
+        this.abilities = [];
     }
 }
 

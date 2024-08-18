@@ -5,10 +5,13 @@ import { createNewGame } from './game/createGame';
 
 import './App.css'
 import HeroForm from './components/HeroForm';
+import ScoresBoard from './components/ScoresBoard';
+import type Game from './game';
 
-let game = createNewGame();
+
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [game, setGame] = useState<Game>(createNewGame());
   const [selectedHero, setSelectedHero] = useState<Hero | null>(null);
 
   const startGame = () => {
@@ -22,7 +25,7 @@ function App() {
   const newGame = () => {
     game.destroy();
 
-    game = createNewGame();
+    setGame(createNewGame());
     if (canvasRef.current) {
       game.linkToCanvas(canvasRef.current);
     }
@@ -63,6 +66,10 @@ function App() {
 
   return (
     <main>
+      <section>
+        <ScoresBoard game={game} />
+      </section>
+
       <section>
         <canvas 
           className="canvas"

@@ -5,10 +5,14 @@ import GameEntity from "./GameEntity";
 class MovableEntity extends GameEntity {
     direction: Direction;
 
-    constructor({position = DEFAULTS.ENTITY.POSITION, direction = DEFAULTS.ENTITY.DIRECTION, meta = {}}) {
-        super({position, meta});
+    constructor({position = DEFAULTS.ENTITY.POSITION, direction = DEFAULTS.ENTITY.DIRECTION, meta = {}, name = ''}) {
+        super({position, meta, name});
 
         this.direction = direction;
+    }
+
+    destroy() {
+        super.destroy();
     }
 }
 

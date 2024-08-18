@@ -40,7 +40,7 @@ function HeroForm({hero}: Props) {
 
     return (
         <form>
-            <h3>Hero {hero.id} / {hero.meta.scores || 0}</h3>
+            <h3>Hero {hero.name || hero.id}</h3>
 
             <div>
                 <label htmlFor="speed">Moving speed:</label>
